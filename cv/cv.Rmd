@@ -1,0 +1,72 @@
+---
+name: Harald
+surname: Kliems
+position: "Researcher III"
+pronouns: he/him/his
+address: "6 N Allen St, Madison, WI 53726"
+phone: +1 607 216 8343
+www: haraldkliems.netflify.app
+email: "kliems@gmail.com"
+github: vgxhc
+date: "`r format(Sys.time(), '%B %Y')`"
+output:
+  vitae::awesomecv:
+    page_total: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+library(vitae)
+library(googlesheets4)
+gs4_deauth()
+sheet_url <- "https://docs.google.com/spreadsheets/d/1E2Zu5q0B2JN_kSQ_nX-Sy2VAEi0IEWRQ6z0eU5Ph7KA/edit?usp=sharing"
+edu <- read_sheet(ss = sheet_url,sheet = 1)
+job_hist <- read_sheet(ss = sheet_url,sheet = 2)
+skills <- read_sheet(ss = sheet_url,sheet = 3)
+service <- read_sheet(ss = sheet_url,sheet = 4)
+```
+
+# Some stuff about me
+
+I am an experienced mixed-methods researcher with strong management experience in academic health research. I am looking for a new challenge  that combines my passion for research, outreach, and applied data science.
+
+
+# Education
+
+```{r}
+library(tibble)
+
+
+edu %>% 
+  detailed_entries(Degree, Year, Institution, Where)
+```
+
+
+# Public Service and Advocacy
+
+```{r}
+service %>% 
+  detailed_entries(With, Start, End, What)
+```
+
+
+```{r}
+library(dplyr)
+
+pubs <- scholar::get_publications("hJRUX7MAAAAJ") %>% 
+  detailed_entries(
+    what = title,
+    when = year,
+    with = author,
+    where = journal,
+    why = cites
+  )
+
+# knitr::write_bib(c("vitae", "tibble"), "packages.bib")
+
+pubs %>% 
+  detailed_entries(what, when, with, where, why)
+```
+
+
+Examples of technical writing
